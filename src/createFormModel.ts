@@ -48,7 +48,7 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
                 });
               } else if (self[fieldName]) {
                 // @ts-ignore
-                errors[fieldName] = self[fieldName].errors;
+                errors[fieldName] = JSON.stringify(self[fieldName].errors);
               }
               continue;
             }
@@ -90,19 +90,6 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
             // @ts-ignore
             self.onSubmit();
           } else {
-            // for (const fieldName in options.validation) {
-            //   if (options.validation[fieldName] === 'valid') {
-            //   // @ts-ignore
-            //   if (Array.isArray(self[fieldName].slice())) {
-            //     // @ts-ignore
-            //     self[fieldName].forEach(instance => {
-            //       instance.
-            //     });
-            //   }
-            // }
-            //   // @ts-ignore
-            //   touched[fieldName] = true;
-            // }
             // @ts-ignore
             self.setAllTouched();
           }
