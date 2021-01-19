@@ -1,0 +1,12 @@
+diff --git a/node_modules/yup/lib/mixed.d.ts b/node_modules/yup/lib/mixed.d.ts
+index 93a18e2..52ef351 100644
+--- a/node_modules/yup/lib/mixed.d.ts
++++ b/node_modules/yup/lib/mixed.d.ts
+@@ -14,6 +14,7 @@ declare class MixedSchema<TType = any, TContext = AnyObject, TOut = TType> exten
+ }
+ declare const Mixed: typeof MixedSchema;
+ export default Mixed;
++export type {MixedSchema}
+ export declare function create<TType = any>(): MixedSchema<TType | undefined, Record<string, any>, TType | undefined>;
+ export declare namespace create {
+     var prototype: MixedSchema<any, any, any>;
