@@ -32,7 +32,7 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
             let fieldValidation = options.validation[fieldName];
             if (fieldValidation === 'valid') {
               // @ts-ignore
-              if (Array.isArray(self[fieldName].slice())) {
+              if (self[fieldName] && Array.isArray(self[fieldName].slice())) {
                 // @ts-ignore
                 self[fieldName].forEach(instance => {
                   // TODO: if instance of FormModel
@@ -46,9 +46,9 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
                       errors[fieldName] += JSON.stringify(instance.errors);
                     }
                 });
-              } else {
+              } else if (self[fieldName]) {
                 // @ts-ignore
-                errors[fieldName] = self[fieldName].errors;
+                errors[fieldName] = JSON.stringify(self[fieldName].errors);
               }
               continue;
             }
@@ -90,19 +90,6 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
             // @ts-ignore
             self.onSubmit();
           } else {
-            // for (const fieldName in options.validation) {
-            //   if (options.validation[fieldName] === 'valid') {
-            //   // @ts-ignore
-            //   if (Array.isArray(self[fieldName].slice())) {
-            //     // @ts-ignore
-            //     self[fieldName].forEach(instance => {
-            //       instance.
-            //     });
-            //   }
-            // }
-            //   // @ts-ignore
-            //   touched[fieldName] = true;
-            // }
             // @ts-ignore
             self.setAllTouched();
           }
@@ -111,12 +98,12 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
           for (const fieldName in options.validation) {
             if (options.validation[fieldName] === 'valid') {
               // @ts-ignore
-              if (Array.isArray(self[fieldName].slice())) {
+              if (self[fieldName] && Array.isArray(self[fieldName].slice())) {
                 // @ts-ignore
                 self[fieldName].forEach(instance => {
                   instance.setAllTouched();
                 });
-              } else {
+              } else if (self[fieldName]) {
                 // @ts-ignore
                 self[fieldName].setAllTouched();
               }

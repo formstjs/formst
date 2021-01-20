@@ -35,7 +35,7 @@ const ProjectTeam = createFormModel(
   },
   {
     validation: {
-      name: ['required'],
+      name: 'required',
       lead: ['required'],
       // members
     },
