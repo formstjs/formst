@@ -19,7 +19,7 @@ export default function Field(props: PropType) {
     FieldComponent,
     {
       ...props,
-      value: formInstance[name],
+      value: formInstance[props.name],
       // @ts-ignore
       onChange: formInstance.handleChange,
       // @ts-ignore
