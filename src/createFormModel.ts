@@ -32,7 +32,7 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
             let fieldValidation = options.validation[fieldName];
             if (fieldValidation === 'valid') {
               // @ts-ignore
-              if (self[fieldName] && Array.isArray(self[fieldName].slice())) {
+              if (self[fieldName] && Array.isArray(self[fieldName])) {
                 // @ts-ignore
                 self[fieldName].forEach(instance => {
                   // TODO: if instance of FormModel
@@ -98,7 +98,7 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
           for (const fieldName in options.validation) {
             if (options.validation[fieldName] === 'valid') {
               // @ts-ignore
-              if (self[fieldName] && Array.isArray(self[fieldName].slice())) {
+              if (self[fieldName] && Array.isArray(self[fieldName])) {
                 // @ts-ignore
                 self[fieldName].forEach(instance => {
                   instance.setAllTouched();

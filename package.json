@@ -1,5 +1,5 @@
 {
-  "version": "1.0.4",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -34,16 +34,16 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "mobx-state-tree-form",
+  "name": "mst-form-creator",
   "author": "Himanshu Satija",
-  "module": "dist/mobx-state-tree-form.esm.js",
+  "module": "dist/mst-form-creator.esm.js",
   "size-limit": [
     {
-      "path": "dist/mobx-state-tree-form.cjs.production.min.js",
+      "path": "dist/mst-form-creator.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/mobx-state-tree-form.esm.js",
+      "path": "dist/mst-form-creator.esm.js",
       "limit": "10 KB"
     }
   ],
@@ -66,5 +66,21 @@
     "mobx": "^6.0.4",
     "mobx-state-tree": "^5.0.0",
     "yup": "^0.32.8"
-  }
+  },
+  "description": "Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.geekyants.com:himanshu/mst-form-creator.git"
+  },
+  "keywords": [
+    "react",
+    "mobx",
+    "mobx-state-tree",
+    "form",
+    "forms"
+  ]
 }

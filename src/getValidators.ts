@@ -23,7 +23,7 @@ export function getValidators() {
               .required()
               .isValidSync(value)
           : false,
-      message: 'Required',
+      message: 'This is a required field',
     }),
 
     number: (value: any) => ({
