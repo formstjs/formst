@@ -2,14 +2,14 @@ import React, { ReactChildren, useContext } from 'react';
 import { FormContext } from './MstForm';
 
 type PropType = {
-  component?: string;
+  component?: any;
   children?: ReactChildren;
   type: string;
   name: string;
 };
 
 export default function Field(props: PropType) {
-  const formInstance = useContext(FormContext);
+  const formInstance: any = useContext(FormContext);
   if (!formInstance) {
     throw new Error('Form instance prop is required in MstForm');
   }
