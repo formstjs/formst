@@ -23,7 +23,8 @@ export default function Field(props: PropType) {
       onChange: formInstance.handleChange,
       // @ts-ignore
       onBlur: formInstance.handleBlur,
-      error: formInstance.errors[props.name] & formInstance.touched[props.name],
+      error:
+        formInstance.errors[props.name] && formInstance.touched[props.name],
       ...props,
     },
     props.children
