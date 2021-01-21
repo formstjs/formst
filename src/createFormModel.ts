@@ -81,6 +81,11 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
         get touched() {
           return touched;
         },
+        get isValid() {
+          let errors = self.errors;
+          if (Object.keys(errors).length === 0) return true;
+          return false;
+        },
       },
       actions: {
         handleSubmit(e: FormEvent) {
