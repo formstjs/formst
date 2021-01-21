@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import React, { ReactChildren, useContext } from 'react';
 import { FormContext } from './MstForm';
 
@@ -7,7 +8,7 @@ type PropType = {
   name: string;
 };
 
-export default function ErrorMessage(props: PropType) {
+const ErrorMessage = observer((props: PropType) => {
   const formInstance = useContext(FormContext);
   if (!formInstance) {
     throw new Error('Form instance prop is required in MstForm');
@@ -30,4 +31,6 @@ export default function ErrorMessage(props: PropType) {
       </span>,
     ]
   );
-}
+});
+
+export default ErrorMessage;

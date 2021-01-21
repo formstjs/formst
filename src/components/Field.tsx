@@ -1,5 +1,6 @@
 import React, { ReactChildren, useContext } from 'react';
 import { FormContext } from './MstForm';
+import { observer } from 'mobx-react-lite';
 
 type PropType = {
   component?: any;
@@ -8,7 +9,7 @@ type PropType = {
   name: string;
 };
 
-export default function Field(props: PropType) {
+const Field = observer((props: PropType) => {
   const formInstance: any = useContext(FormContext);
   if (!formInstance) {
     throw new Error('Form instance prop is required in MstForm');
@@ -29,4 +30,6 @@ export default function Field(props: PropType) {
     },
     props.children
   );
-}
+});
+
+export default Field;

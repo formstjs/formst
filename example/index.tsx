@@ -72,7 +72,7 @@ const createProjectForm = CreateProject.create({
 
 const CreateProjectComponent = observer(() => {
   // @ts-ignore
-  console.log(createProjectForm.errors, createProjectForm.touched.name);
+  // console.log(createProjectForm.errors, createProjectForm.touched.name);
   return (
     <div>
       <MstForm formInstance={createProjectForm}>
@@ -119,17 +119,17 @@ const CreateProjectComponent = observer(() => {
               </div>
             </MstForm>
           </div>
-          <div>
+          {/* <div>
             {// @ts-ignore
             createProjectForm.errors.name &&
               // @ts-ignore
               createProjectForm.touched.name &&
               // @ts-ignore
               createProjectForm.errors.name}
-          </div>
-          {createProjectForm.milestones.map(milestone => {
+          </div> */}
+          {createProjectForm.milestones.map((milestone, index) => {
             return (
-              <>
+              <div key={index}>
                 <div>
                   Milestone name:
                   <input
@@ -140,16 +140,17 @@ const CreateProjectComponent = observer(() => {
                     // @ts-ignore
                     onBlur={milestone.handleBlur}
                   />
+                  <ErrorMessage name="milestone" />
                 </div>
-                <div>
+                {/* <div>
                   {// @ts-ignore
                   milestone.errors.name &&
                     // @ts-ignore
                     milestone.touched.name &&
                     // @ts-ignore
                     milestone.errors.name}
-                </div>
-              </>
+                </div> */}
+              </div>
             );
           })}
           <button type="submit">Submit</button>

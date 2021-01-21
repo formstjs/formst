@@ -65,6 +65,7 @@
     "lodash": "^4.17.20",
     "mobx": "^6.0.4",
     "mobx-state-tree": "^5.0.0",
+    "mobx-react-lite": "^3.1.6",
     "yup": "^0.32.8"
   },
   "description": "Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.",
