@@ -2,7 +2,7 @@ import React, { ReactChildren, useContext } from 'react';
 import { FormContext } from './MstForm';
 
 type PropType = {
-  component?: string;
+  component?: any;
   children?: ReactChildren;
   name: string;
 };

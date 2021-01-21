@@ -18,7 +18,7 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
 ): IModelType<ModelPropertiesDeclarationToProperties<P>, {}> {
   return types.model(modelName, properties).extend(self => {
     const isSubmitting = observable.box(false);
-    const touched = observable.object({});
+    const touched: any = observable.object({});
     return {
       views: {
         get isSubmitting() {
@@ -116,9 +116,13 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
         setSubmitting(submitting: boolean) {
           isSubmitting.set(submitting);
         },
-        handleChange(e: ChangeEvent) {
+        handleChange(e: ChangeEvent<any>) {
           // @ts-ignore
           self[e.target.name] = e.target.value;
+          if (!self.touched[e.target.name]) {
+            // @ts-ignore
+            self.touched[e.target.name] = true;
+          }
         },
         handleBlur(e: SyntheticEvent) {
           // @ts-ignore
