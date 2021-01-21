@@ -18,12 +18,13 @@ export default function Field(props: PropType) {
   return React.createElement(
     FieldComponent,
     {
-      ...props,
       value: formInstance[props.name],
       // @ts-ignore
       onChange: formInstance.handleChange,
       // @ts-ignore
       onBlur: formInstance.handleBlur,
+      error: formInstance.errors[props.name] & formInstance.touched[props.name],
+      ...props,
     },
     props.children
   );
