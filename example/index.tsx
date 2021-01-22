@@ -61,6 +61,9 @@ const CreateProject = createFormModel(
     },
   }
 ).actions(self => ({
+  changeValue: (value: string) => {
+    self.name = value.toUpperCase();
+  },
   onSubmit: () => {
     setTimeout(() => {
       alert(JSON.stringify(getSnapshot(self), null, 2));
@@ -75,6 +78,11 @@ const createProjectForm = CreateProject.create({
 });
 
 const CreateProjectComponent = observer(() => {
+  console.log(
+    'createProjectForm &*&',
+    getSnapshot(createProjectForm),
+    createProjectForm.isSubmitting
+  );
   return (
     <div>
       <MstForm formInstance={createProjectForm}>
@@ -82,6 +90,14 @@ const CreateProjectComponent = observer(() => {
           <div>
             Project name:
             <Field name="name" type="text" />
+            <input
+              name="name"
+              value={createProjectForm.name}
+              onChange={event => {
+                createProjectForm.changeValue(event.target.value);
+              }}
+              onBlur={createProjectForm.handleBlur}
+            />
           </div>
           <div>
             <ErrorMessage name="name" />
@@ -113,12 +129,7 @@ const CreateProjectComponent = observer(() => {
                     <input
                       name="name"
                       value={milestone.name}
-                      onChange={(event: any) => {
-                        milestone.setValue(
-                          'name',
-                          event.target.value.toUpperCase()
-                        );
-                      }}
+                      onChange={milestone.handleChange}
                       onBlur={milestone.handleBlur}
                     />
                     <ErrorMessage name="name" />
@@ -128,6 +139,12 @@ const CreateProjectComponent = observer(() => {
             );
           })}
           <button type="submit">Submit</button>
+          {createProjectForm.isSubmitting ? (
+            <h1>submitting</h1>
+          ) : (
+            <h2>submitted</h2>
+          )}
+          {/* {console.log(createProjectForm.isSubmitting, '')} */}
         </form>
       </MstForm>
     </div>

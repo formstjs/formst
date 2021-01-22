@@ -11,10 +11,14 @@ export function createFormModel(
   return types
     .model(modelName, properties)
     .volatile(() => ({
-      isSubmitting: observable.box(false),
+      submitting: observable.box(false),
       touched: observable.object<any>({}),
     }))
     .views(self => ({
+      get isSubmitting() {
+        return self.submitting.get();
+      },
+
       get errors() {
         const errors: any = {};
         const validators = getValidators();
@@ -79,7 +83,7 @@ export function createFormModel(
       handleSubmit(e: FormEvent) {
         e.preventDefault();
         if (Object.keys(self.errors).length === 0) {
-          self.isSubmitting.set(true);
+          self.submitting.set(true);
           self.onSubmit();
         } else {
           self.setAllTouched();
@@ -103,7 +107,7 @@ export function createFormModel(
       },
 
       setSubmitting(submitting: boolean) {
-        self.isSubmitting.set(submitting);
+        self.submitting.set(submitting);
       },
 
       handleChange(e: React.ChangeEvent<any>) {
