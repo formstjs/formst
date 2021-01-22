@@ -1,12 +1,5 @@
 import * as yup from 'yup';
-// @ts-ignore
-import { MixedSchema } from 'yup/lib/mixed'; // Hack needed for TS issue
 import isNil from 'lodash/isNil';
-
-// // @ts-ignore
-// window['yup'] = yup;
-// // @ts-ignore
-// window['isNil'] = isNil;
 
 let customValidators: any = {};
 export function defineValidators(validators: any) {
