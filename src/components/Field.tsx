@@ -1,34 +1,33 @@
-import React, { ReactChildren, useContext } from 'react';
+import React, { InputHTMLAttributes, ReactChildren, useContext } from 'react';
 import { FormContext } from './MstForm';
 import { observer } from 'mobx-react-lite';
 
 type PropType = {
+  name: string;
   component?: any;
   children?: ReactChildren;
-  type: string;
-  name: string;
-};
+} & InputHTMLAttributes<any>;
 
 const Field = observer((props: PropType) => {
+  const { name, component, children, ...rest } = props;
+
   const formInstance: any = useContext(FormContext);
   if (!formInstance) {
     throw new Error('Form instance prop is required in MstForm');
   }
-  const FieldComponent = props.component ? props.component : 'input';
+
+  const FieldComponent = component ? component : 'input';
 
   return React.createElement(
     FieldComponent,
     {
-      value: formInstance[props.name],
-      // @ts-ignore
+      name: name,
+      value: formInstance[name],
       onChange: formInstance.handleChange,
-      // @ts-ignore
       onBlur: formInstance.handleBlur,
-      error:
-        formInstance.errors[props.name] && formInstance.touched[props.name],
-      ...props,
+      ...rest,
     },
-    props.children
+    children
   );
 });
 

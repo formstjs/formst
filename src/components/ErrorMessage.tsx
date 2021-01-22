@@ -9,7 +9,7 @@ type PropType = {
 };
 
 const ErrorMessage = observer((props: PropType) => {
-  const formInstance = useContext(FormContext);
+  const formInstance: any = useContext(FormContext);
   if (!formInstance) {
     throw new Error('Form instance prop is required in MstForm');
   }
@@ -22,11 +22,8 @@ const ErrorMessage = observer((props: PropType) => {
     },
     [
       <span>
-        {// @ts-ignore
-        formInstance.errors[props.name] &&
-          // @ts-ignore
+        {formInstance.errors[props.name] &&
           formInstance.touched[props.name] &&
-          // @ts-ignore
           formInstance.errors[props.name]}
       </span>,
     ]

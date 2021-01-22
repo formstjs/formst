@@ -2,7 +2,6 @@ import React, { ReactChild } from 'react';
 
 type PropType = {
   children: ReactChild | Array<ReactChild>;
-
   formInstance: any;
 };
 

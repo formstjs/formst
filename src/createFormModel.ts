@@ -1,139 +1,124 @@
 import { observable } from 'mobx';
-import {
-  IModelType,
-  // Instance,
-  // isArrayType,
-  ModelPropertiesDeclaration,
-  ModelPropertiesDeclarationToProperties,
-  // TypeOfValue,
-  types,
-} from 'mobx-state-tree';
-import { ChangeEvent, FormEvent, SyntheticEvent } from 'react';
+import { TypeOfValue, types } from 'mobx-state-tree';
+import { FormEvent } from 'react';
 import { getValidators } from './getValidators';
 
-export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
+export function createFormModel(
   modelName: string,
-  properties: P,
+  properties: any,
   options: any
-): IModelType<ModelPropertiesDeclarationToProperties<P>, {}> {
-  return types.model(modelName, properties).extend(self => {
-    const isSubmitting = observable.box(false);
-    const touched: any = observable.object({});
-    return {
-      views: {
-        get isSubmitting() {
-          return isSubmitting.get();
-        },
-        get errors() {
-          const errors: any = {};
-          const validators = getValidators();
+) {
+  return types
+    .model(modelName, properties)
+    .volatile(() => ({
+      isSubmitting: observable.box(false),
+      touched: observable.object<any>({}),
+    }))
+    .views(self => ({
+      get isSubmitting() {
+        return self.isSubmitting.get();
+      },
 
-          for (const fieldName in options.validation) {
-            let fieldValidation = options.validation[fieldName];
-            if (fieldValidation === 'valid') {
-              // @ts-ignore
-              if (self[fieldName] && Array.isArray(self[fieldName])) {
+      get errors() {
+        const errors: any = {};
+        const validators = getValidators();
+
+        for (const fieldName in options.validation) {
+          let fieldValidation = options.validation[fieldName];
+          if (fieldValidation === 'valid') {
+            if (self[fieldName] && Array.isArray(self[fieldName])) {
+              self[fieldName].forEach((instance: TypeOfValue<typeof self>) => {
                 // @ts-ignore
-                self[fieldName].forEach(instance => {
-                  // TODO: if instance of FormModel
-                  if (
-                    instance.errors &&
-                    Object.keys(instance.errors).length > 0
-                  )
-                    if (!errors[fieldName]) {
-                      errors[fieldName] = JSON.stringify(instance.errors);
-                    } else {
-                      errors[fieldName] += JSON.stringify(instance.errors);
-                    }
-                });
-              } else if (self[fieldName]) {
-                // @ts-ignore
-                errors[fieldName] = JSON.stringify(self[fieldName].errors);
-              }
-              continue;
-            }
-
-            if (typeof fieldValidation === 'string') {
-              fieldValidation = [fieldValidation];
-            }
-
-            let errorMessage: string = '';
-            if (typeof fieldValidation === 'function') {
-              errorMessage = fieldValidation(self[fieldName]);
-            } else if (Array.isArray(fieldValidation)) {
-              fieldValidation.forEach((validatorName: string) => {
-                if (validators[validatorName]) {
-                  const validation = validators[validatorName](self[fieldName]);
-                  if (!validation.valid) {
-                    errorMessage += validation.message;
+                if (instance.errors && Object.keys(instance.errors).length > 0)
+                  if (!errors[fieldName]) {
+                    // @ts-ignore
+                    errors[fieldName] = JSON.stringify(instance.errors);
+                  } else {
+                    // @ts-ignore
+                    errors[fieldName] += JSON.stringify(instance.errors);
                   }
-                }
               });
+            } else if (self[fieldName]) {
+              errors[fieldName] = JSON.stringify(self[fieldName].errors);
             }
+            continue;
+          }
 
-            // const errorMessage = fieldValidation(self[fieldName]);
-            if (errorMessage) {
-              errors[fieldName] = errorMessage;
-            }
+          if (typeof fieldValidation === 'string') {
+            fieldValidation = [fieldValidation];
           }
-          return errors;
-        },
-        get touched() {
-          return touched;
-        },
-        get isValid() {
-          let errors = self.errors;
-          if (Object.keys(errors).length === 0) return true;
-          return false;
-        },
-      },
-      actions: {
-        handleSubmit(e: FormEvent) {
-          e.preventDefault();
-          if (Object.keys(self.errors).length === 0) {
-            isSubmitting.set(true);
-            // @ts-ignore
-            self.onSubmit();
-          } else {
-            // @ts-ignore
-            self.setAllTouched();
-          }
-        },
-        setAllTouched() {
-          for (const fieldName in options.validation) {
-            if (options.validation[fieldName] === 'valid') {
-              // @ts-ignore
-              if (self[fieldName] && Array.isArray(self[fieldName])) {
-                // @ts-ignore
-                self[fieldName].forEach(instance => {
-                  instance.setAllTouched();
-                });
-              } else if (self[fieldName]) {
-                // @ts-ignore
-                self[fieldName].setAllTouched();
+
+          let errorMessage: string = '';
+          if (typeof fieldValidation === 'function') {
+            errorMessage = fieldValidation(self[fieldName]);
+          } else if (Array.isArray(fieldValidation)) {
+            fieldValidation.forEach((validatorName: string) => {
+              if (validators[validatorName]) {
+                const validation = validators[validatorName](self[fieldName]);
+                if (!validation.valid) {
+                  errorMessage += validation.message;
+                }
               }
-            } else {
-              // @ts-ignore
-              touched[fieldName] = true;
-            }
+            });
           }
-        },
-        setSubmitting(submitting: boolean) {
-          isSubmitting.set(submitting);
-        },
-        handleChange(e: ChangeEvent<any>) {
-          // @ts-ignore
-          self[e.target.name] = e.target.value;
-          if (!self.touched[e.target.name]) {
-            // @ts-ignore
-            self.touched[e.target.name] = true;
+
+          if (errorMessage) {
+            errors[fieldName] = errorMessage;
           }
-        },
-        handleBlur(e: SyntheticEvent) {
-          // @ts-ignore
-          touched[e.target.name] = true;
-        },
+        }
+        return errors;
       },
-    };
-  });
+
+      get isValid() {
+        let errors = self.errors;
+        if (Object.keys(errors).length === 0) return true;
+        return false;
+      },
+    }))
+    .actions(self => ({
+      handleSubmit(e: FormEvent) {
+        e.preventDefault();
+        if (Object.keys(self.errors).length === 0) {
+          self.isSubmitting.set(true);
+          self.onSubmit();
+        } else {
+          self.setAllTouched();
+        }
+      },
+
+      setAllTouched() {
+        for (const fieldName in options.validation) {
+          if (options.validation[fieldName] === 'valid') {
+            if (self[fieldName] && Array.isArray(self[fieldName])) {
+              self[fieldName].forEach((instance: any) => {
+                instance.setAllTouched();
+              });
+            } else if (self[fieldName]) {
+              self[fieldName].setAllTouched();
+            }
+          } else {
+            self.touched[fieldName] = true;
+          }
+        }
+      },
+
+      setSubmitting(submitting: boolean) {
+        self.isSubmitting.set(submitting);
+      },
+
+      handleChange(e: React.ChangeEvent<any>) {
+        self[e.target.name] = e.target.value;
+        if (!self.touched[e.target.name]) {
+          self.touched[e.target.name] = true;
+        }
+      },
+
+      handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+        self.touched[e.target.name] = true;
+      },
+
+      setValue(name: string, value: any) {
+        self[name] = value;
+      },
+    }));
 }
