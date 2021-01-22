@@ -15,10 +15,6 @@ export function createFormModel(
       touched: observable.object<any>({}),
     }))
     .views(self => ({
-      get isSubmitting() {
-        return self.isSubmitting.get();
-      },
-
       get errors() {
         const errors: any = {};
         const validators = getValidators();
@@ -38,7 +34,11 @@ export function createFormModel(
                     errors[fieldName] += JSON.stringify(instance.errors);
                   }
               });
-            } else if (self[fieldName]) {
+            } else if (
+              self[fieldName] &&
+              self[fieldName].errors &&
+              Object.keys(self[fieldName].errors).length > 0
+            ) {
               errors[fieldName] = JSON.stringify(self[fieldName].errors);
             }
             continue;

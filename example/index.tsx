@@ -12,11 +12,9 @@ import { getSnapshot, types } from 'mobx-state-tree';
 import { observer } from 'mobx-react-lite';
 
 defineValidators({
-  required: (value: any) => ({
-    minLen: (value: any) => ({
-      valid: typeof value === 'string' && value.length < 8,
-      message: 'This is a required field',
-    }),
+  minLen: (value: any) => ({
+    valid: typeof value === 'string' && value.length < 8,
+    message: 'String is greater than 8 chars',
   }),
 });
 
@@ -44,7 +42,7 @@ const ProjectTeam = createFormModel(
   {
     validation: {
       name: 'required',
-      lead: ['required'],
+      lead: ['required', 'minLen'],
     },
   }
 );
@@ -59,13 +57,13 @@ const CreateProject = createFormModel(
     validation: {
       name: ['required'],
       milestones: 'valid',
+      team: 'valid',
     },
   }
 ).actions(self => ({
   onSubmit: () => {
     setTimeout(() => {
       alert(JSON.stringify(getSnapshot(self), null, 2));
-      // @ts-ignore
       self.setSubmitting(false);
     }, 400);
   },
