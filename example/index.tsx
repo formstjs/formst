@@ -11,6 +11,15 @@ import {
 import { getSnapshot, types } from 'mobx-state-tree';
 import { observer } from 'mobx-react-lite';
 
+defineValidators({
+  required: (value: any) => ({
+    minLen: (value: any) => ({
+      valid: typeof value === 'string' && value.length < 8,
+      message: 'This is a required field',
+    }),
+  }),
+});
+
 const Milestone = createFormModel(
   'Milestone',
   {
@@ -31,13 +40,11 @@ const ProjectTeam = createFormModel(
   {
     name: types.string,
     lead: types.string,
-    // members: types.array(types.string),
   },
   {
     validation: {
       name: 'required',
       lead: ['required'],
-      // members
     },
   }
 );
@@ -68,38 +75,18 @@ const createProjectForm = CreateProject.create({
   team: { name: '', lead: '' },
   milestones: [{ name: '' }],
 });
-// const createProject = CreateProjectForm.create();
 
 const CreateProjectComponent = observer(() => {
-  // @ts-ignore
-  // console.log(createProjectForm.errors, createProjectForm.touched.name);
   return (
     <div>
       <MstForm formInstance={createProjectForm}>
-        <form
-          // @ts-ignore
-          onSubmit={createProjectForm.handleSubmit}
-        >
+        <form onSubmit={createProjectForm.handleSubmit}>
           <div>
             Project name:
-            {/* <input
-              value={createProjectForm.name}
-              name="name"
-              // @ts-ignore
-              onChange={createProjectForm.handleChange}
-              // @ts-ignore
-              onBlur={createProjectForm.handleBlur}
-            /> */}
             <Field name="name" type="text" />
           </div>
           <div>
             <ErrorMessage name="name" />
-            {/* {// @ts-ignore
-            createProjectForm.errors.name &&
-              // @ts-ignore
-              createProjectForm.touched.name &&
-              // @ts-ignore
-              createProjectForm.errors.name} */}
           </div>
           <div style={{ border: '1px solid black' }}>
             <MstForm formInstance={createProjectForm.team}>
@@ -119,38 +106,27 @@ const CreateProjectComponent = observer(() => {
               </div>
             </MstForm>
           </div>
-          {/* <div>
-            {// @ts-ignore
-            createProjectForm.errors.name &&
-              // @ts-ignore
-              createProjectForm.touched.name &&
-              // @ts-ignore
-              createProjectForm.errors.name}
-          </div> */}
           {createProjectForm.milestones.map((milestone, index) => {
             return (
-              <div key={index}>
-                <div>
-                  Milestone name:
-                  <input
-                    value={milestone.name}
-                    name="name"
-                    // @ts-ignore
-                    onChange={milestone.handleChange}
-                    // @ts-ignore
-                    onBlur={milestone.handleBlur}
-                  />
-                  <ErrorMessage name="milestone" />
+              <MstForm formInstance={milestone}>
+                <div key={index}>
+                  <div>
+                    Milestone name:
+                    <input
+                      name="name"
+                      value={milestone.name}
+                      onChange={(event: any) => {
+                        milestone.setValue(
+                          'name',
+                          event.target.value.toUpperCase()
+                        );
+                      }}
+                      onBlur={milestone.handleBlur}
+                    />
+                    <ErrorMessage name="name" />
+                  </div>
                 </div>
-                {/* <div>
-                  {// @ts-ignore
-                  milestone.errors.name &&
-                    // @ts-ignore
-                    milestone.touched.name &&
-                    // @ts-ignore
-                    milestone.errors.name}
-                </div> */}
-              </div>
+              </MstForm>
             );
           })}
           <button type="submit">Submit</button>
