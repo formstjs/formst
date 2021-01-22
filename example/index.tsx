@@ -6,7 +6,7 @@ import {
   defineValidators,
   ErrorMessage,
   Field,
-  MstForm,
+  MSTForm,
 } from '../.';
 import { getSnapshot, types } from 'mobx-state-tree';
 import { observer } from 'mobx-react-lite';
@@ -85,7 +85,7 @@ const CreateProjectComponent = observer(() => {
   );
   return (
     <div>
-      <MstForm formInstance={createProjectForm}>
+      <MSTForm formInstance={createProjectForm}>
         <form onSubmit={createProjectForm.handleSubmit}>
           <div>
             Project name:
@@ -103,7 +103,7 @@ const CreateProjectComponent = observer(() => {
             <ErrorMessage name="name" />
           </div>
           <div style={{ border: '1px solid black' }}>
-            <MstForm formInstance={createProjectForm.team}>
+            <MSTForm formInstance={createProjectForm.team}>
               <div>
                 Team name:
                 <Field name="name" type="text" />
@@ -118,11 +118,11 @@ const CreateProjectComponent = observer(() => {
               <div>
                 <ErrorMessage name="lead" />
               </div>
-            </MstForm>
+            </MSTForm>
           </div>
           {createProjectForm.milestones.map((milestone, index) => {
             return (
-              <MstForm formInstance={milestone}>
+              <MSTForm formInstance={milestone}>
                 <div key={index}>
                   <div>
                     Milestone name:
@@ -135,7 +135,7 @@ const CreateProjectComponent = observer(() => {
                     <ErrorMessage name="name" />
                   </div>
                 </div>
-              </MstForm>
+              </MSTForm>
             );
           })}
           <button type="submit">Submit</button>
@@ -146,7 +146,7 @@ const CreateProjectComponent = observer(() => {
           )}
           {/* {console.log(createProjectForm.isSubmitting, '')} */}
         </form>
-      </MstForm>
+      </MSTForm>
     </div>
   );
 });

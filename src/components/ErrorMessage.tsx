@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { ReactChildren, useContext } from 'react';
-import { FormContext } from './MstForm';
+import { FormContext } from './MSTForm';
 
 type PropType = {
   component?: any;

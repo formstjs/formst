@@ -7,7 +7,7 @@ type PropType = {
 
 export const FormContext = React.createContext(null);
 
-export default function MstForm(props: PropType) {
+export default function MSTForm(props: PropType) {
   return (
     <FormContext.Provider value={props.formInstance}>
       {props.children}
