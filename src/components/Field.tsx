@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 type PropType = {
   name: string;
-  component?: any;
+  component?: React.ComponentClass<any> | string;
   children?: ReactChildren;
 } & InputHTMLAttributes<any>;
 
@@ -17,6 +17,7 @@ const Field = observer((props: PropType) => {
   }
 
   const FieldComponent = component ? component : 'input';
+  const style = { display: 'block' };
 
   return React.createElement(
     FieldComponent,
@@ -25,6 +26,7 @@ const Field = observer((props: PropType) => {
       value: formInstance[name],
       onChange: formInstance.handleChange,
       onBlur: formInstance.handleBlur,
+      style: style,
       ...rest,
     },
     children

@@ -77,6 +77,31 @@ const createProjectForm = CreateProject.create({
   milestones: [{ name: '' }],
 });
 
+const TodoForm = createFormModel(
+  'TodoForm',
+  {
+    title: types.string,
+    description: types.string,
+  },
+  {
+    validation: {
+      title: ['required'],
+      description: 'required',
+    },
+  }
+).actions(self => ({
+  onSubmit: () => {
+    setTimeout(() => {
+      alert(JSON.stringify(getSnapshot(self), null, 2));
+    }, 100);
+  },
+}));
+
+const todoForm = TodoForm.create({
+  title: '',
+  description: '',
+});
+
 const CreateProjectComponent = observer(() => {
   console.log(
     'createProjectForm &*&',
@@ -86,7 +111,7 @@ const CreateProjectComponent = observer(() => {
   return (
     <div>
       <MSTForm formInstance={createProjectForm}>
-        <form onSubmit={createProjectForm.handleSubmit}>
+        <form key={'master'} onSubmit={createProjectForm.handleSubmit}>
           <div>
             Project name:
             <Field name="name" type="text" />
@@ -104,25 +129,27 @@ const CreateProjectComponent = observer(() => {
           </div>
           <div style={{ border: '1px solid black' }}>
             <MSTForm formInstance={createProjectForm.team}>
-              <div>
-                Team name:
-                <Field name="name" type="text" />
-              </div>
-              <div>
-                <ErrorMessage name="name" />
-              </div>
-              <div>
-                Lead name:
-                <Field name="lead" type="text" />
-              </div>
-              <div>
-                <ErrorMessage name="lead" />
+              <div key={'second'}>
+                <div>
+                  Team name:
+                  <Field name="name" type="text" />
+                </div>
+                <div>
+                  <ErrorMessage name="name" />
+                </div>
+                <div>
+                  Lead name:
+                  <Field name="lead" type="text" />
+                </div>
+                <div>
+                  <ErrorMessage name="lead" />
+                </div>
               </div>
             </MSTForm>
           </div>
           {createProjectForm.milestones.map((milestone, index) => {
             return (
-              <MSTForm formInstance={milestone}>
+              <MSTForm formInstance={milestone} key={index}>
                 <div key={index}>
                   <div>
                     Milestone name:
@@ -144,7 +171,20 @@ const CreateProjectComponent = observer(() => {
           ) : (
             <h2>submitted</h2>
           )}
+
+          {createProjectForm.isValid ? <h1>valid</h1> : <h2>not valid</h2>}
           {/* {console.log(createProjectForm.isSubmitting, '')} */}
+        </form>
+      </MSTForm>
+
+      <MSTForm formInstance={todoForm}>
+        <form onSubmit={todoForm.handleSubmit}>
+          <Field name="title" />
+          <ErrorMessage name="title" />
+          <br />
+          <Field name="description" />
+          <ErrorMessage name="description" />
+          <button type="submit">Submit</button>
         </form>
       </MSTForm>
     </div>

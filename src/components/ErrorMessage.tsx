@@ -1,24 +1,27 @@
 import { observer } from 'mobx-react-lite';
-import React, { ReactChildren, useContext } from 'react';
+import React, { HTMLAttributes, ReactChildren, useContext } from 'react';
 import { FormContext } from './MSTForm';
 
 type PropType = {
-  component?: any;
+  component?: React.ComponentClass<any> | string;
   children?: ReactChildren;
   name: string;
-};
+} & HTMLAttributes<any>;
 
 const ErrorMessage = observer((props: PropType) => {
+  const { component, name, ...rest } = props;
   const formInstance: any = useContext(FormContext);
   if (!formInstance) {
     throw new Error('Form instance prop is required in MstForm');
   }
   const ErrorComponent = props.component ? props.component : 'div';
+  const style = { display: 'block' };
 
   return React.createElement(
     ErrorComponent,
     {
-      ...props,
+      style: style,
+      ...rest,
     },
     [
       <span>
