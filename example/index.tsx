@@ -7,9 +7,9 @@ import {
   ErrorMessage,
   Field,
   MSTForm,
+  observer,
 } from '../.';
 import { getSnapshot, types } from 'mobx-state-tree';
-import { observer } from 'mobx-react-lite';
 
 defineValidators({
   minLen: (value: any) => ({
@@ -30,9 +30,6 @@ const Milestone = createFormModel(
           return 'Required';
         }
       },
-    },
-    preprocessor: {
-      name: (value: string) => value.toUpperCase(),
     },
   }
 );
@@ -69,17 +66,23 @@ const CreateProject = createFormModel(
       name: (value: string) => value.toUpperCase(),
     },
   }
-).actions(self => ({
-  changeValue: (value: string) => {
-    self.name = value.toUpperCase();
-  },
-  onSubmit: () => {
-    setTimeout(() => {
-      alert(JSON.stringify(getSnapshot(self), null, 2));
-      self.setSubmitting(false);
-    }, 400);
-  },
-}));
+)
+  .views(self => ({
+    get totalMilestone() {
+      return self.milestones.length;
+    },
+  }))
+  .actions(self => ({
+    changeValue: (value: string) => {
+      self.name = value.toUpperCase();
+    },
+    onSubmit: () => {
+      setTimeout(() => {
+        alert(JSON.stringify(getSnapshot(self), null, 2));
+        self.setSubmitting(false);
+      }, 400);
+    },
+  }));
 const createProjectForm = CreateProject.create({
   name: '',
   team: { name: '', lead: '' },
@@ -118,20 +121,22 @@ const CreateProjectComponent = observer(() => {
   console.log(
     'createProjectForm &*&',
     getSnapshot(createProjectForm),
-    createProjectForm.isSubmitting
+    createProjectForm.isSubmitting,
+    createProjectForm.totalMilestone
   );
   return (
     <div>
       <MSTForm formInstance={createProjectForm}>
         <form key={'master'} onSubmit={createProjectForm.handleSubmit}>
+          {createProjectForm.totalMilestone}
           <div>
             Project name:
             <Field name="name" type="text" />
             <input
               name="name"
               value={createProjectForm.name}
-              onChange={event => {
-                createProjectForm.changeValue(event.target.value);
+              onChange={e => {
+                createProjectForm.setValue('name', e.target.value);
               }}
               onBlur={createProjectForm.handleBlur}
             />
@@ -139,6 +144,7 @@ const CreateProjectComponent = observer(() => {
           <div>
             <ErrorMessage name="name" />
           </div>
+          <div></div>
           <div style={{ border: '1px solid black' }}>
             <MSTForm formInstance={createProjectForm.team}>
               <div key={'second'}>
