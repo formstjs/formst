@@ -34,16 +34,16 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "mst-form-creator",
+  "name": "formst",
   "author": "Himanshu Satija",
-  "module": "dist/mst-form-creator.esm.js",
+  "module": "dist/formst.esm.js",
   "size-limit": [
     {
-      "path": "dist/mst-form-creator.cjs.production.min.js",
+      "path": "dist/formst.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/mst-form-creator.esm.js",
+      "path": "dist/formst.esm.js",
       "limit": "10 KB"
     }
   ],
@@ -75,7 +75,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.geekyants.com:himanshu/mst-form-creator.git"
+    "url": "git@github.com:formstjs/formst.git"
   },
   "keywords": [
     "react",
