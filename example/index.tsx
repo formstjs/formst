@@ -31,6 +31,9 @@ const Milestone = createFormModel(
         }
       },
     },
+    preprocessor: {
+      name: (value: string) => value.toUpperCase(),
+    },
   }
 );
 const ProjectTeam = createFormModel(
@@ -43,6 +46,9 @@ const ProjectTeam = createFormModel(
     validation: {
       name: 'required',
       lead: ['required', 'minLen'],
+    },
+    preprocessor: {
+      name: (value: string) => value.toUpperCase(),
     },
   }
 );
@@ -58,6 +64,9 @@ const CreateProject = createFormModel(
       name: ['required'],
       milestones: 'valid',
       team: 'valid',
+    },
+    preprocessor: {
+      name: (value: string) => value.toUpperCase(),
     },
   }
 ).actions(self => ({
@@ -87,6 +96,9 @@ const TodoForm = createFormModel(
     validation: {
       title: ['required'],
       description: 'required',
+    },
+    preprocessor: {
+      title: (value: string) => value.toUpperCase(),
     },
   }
 ).actions(self => ({

@@ -111,7 +111,12 @@ export function createFormModel(
       },
 
       handleChange(e: React.ChangeEvent<any>) {
-        self[e.target.name] = e.target.value;
+        let preprocessor = (value: any) => value;
+        if (options.preprocessor && options.preprocessor[e.target.name]) {
+          preprocessor = options.preprocessor[e.target.name];
+        }
+
+        self[e.target.name] = preprocessor(e.target.value);
         if (!self.touched[e.target.name]) {
           self.touched[e.target.name] = true;
         }
