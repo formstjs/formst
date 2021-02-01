@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { HTMLAttributes, ReactChildren, useContext } from 'react';
-import { FormContext } from './MSTForm';
+import { FormContext } from './Formst';
 
 type PropType = {
   component?: React.ComponentClass<any> | string;
@@ -12,10 +12,12 @@ const ErrorMessage = observer((props: PropType) => {
   const { component, name, ...rest } = props;
   const formInstance: any = useContext(FormContext);
   if (!formInstance) {
-    throw new Error('Form instance prop is required in MstForm');
+    throw new Error('formInstance prop is required in Formst');
   }
   const ErrorComponent = props.component ? props.component : 'div';
   const style = { display: 'block' };
+
+  if (name === 'lead') console.log(name, formInstance.touched[props.name]);
 
   return React.createElement(
     ErrorComponent,
