@@ -5,7 +5,7 @@ export function defineValidators(validators: any) {
   customValidators = validators;
 }
 function isNil(value: any) {
-  return value == null
+  return value == null;
 }
 export function getValidators() {
   const defaultValidators = {
