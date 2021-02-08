@@ -128,12 +128,12 @@ const addMilestone = () => {
 };
 
 const CreateProjectComponent = observer(() => {
-  // console.log(
-  //   'createProjectForm &*&',
-  //   getSnapshot(createProjectForm),
-  //   createProjectForm.isSubmitting,
-  //   createProjectForm.totalMilestone
-  // );
+  console.log(
+    'createProjectForm &*&',
+    getSnapshot(createProjectForm),
+    createProjectForm.isSubmitting,
+    createProjectForm.name
+  );
   return (
     <div>
       <Formst formInstance={createProjectForm}>
