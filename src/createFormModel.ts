@@ -1,11 +1,15 @@
 import { observable } from 'mobx';
-import { TypeOfValue, types } from 'mobx-state-tree';
+import {
+  ModelPropertiesDeclaration,
+  TypeOfValue,
+  types,
+} from 'mobx-state-tree';
 import { FormEvent } from 'react';
 import { getValidators } from './getValidators';
 
-export function createFormModel(
+export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
   modelName: string,
-  properties: any,
+  properties: P,
   options: any
 ) {
   return types
@@ -27,6 +31,7 @@ export function createFormModel(
           let fieldValidation = options.validation[fieldName];
           if (fieldValidation === 'valid') {
             if (self[fieldName] && Array.isArray(self[fieldName])) {
+              // @ts-ignore
               self[fieldName].forEach((instance: TypeOfValue<typeof self>) => {
                 // @ts-ignore
                 if (instance.errors && Object.keys(instance.errors).length > 0)
@@ -40,9 +45,12 @@ export function createFormModel(
               });
             } else if (
               self[fieldName] &&
+              // @ts-ignore
               self[fieldName].errors &&
+              // @ts-ignore
               Object.keys(self[fieldName].errors).length > 0
             ) {
+              // @ts-ignore
               errors[fieldName] = JSON.stringify(self[fieldName].errors);
             }
             continue;
@@ -84,8 +92,10 @@ export function createFormModel(
         e.preventDefault();
         if (Object.keys(self.errors).length === 0) {
           self.submitting.set(true);
+          // @ts-ignore
           self.onSubmit();
         } else {
+          // @ts-ignore
           self.setAllTouched();
         }
       },
@@ -94,10 +104,12 @@ export function createFormModel(
         for (const fieldName in options.validation) {
           if (options.validation[fieldName] === 'valid') {
             if (self[fieldName] && Array.isArray(self[fieldName])) {
+              // @ts-ignore
               self[fieldName].forEach((instance: any) => {
                 instance.setAllTouched();
               });
             } else if (self[fieldName]) {
+              // @ts-ignore
               self[fieldName].setAllTouched();
             }
           } else {
@@ -111,6 +123,7 @@ export function createFormModel(
       },
 
       handleChange(e: React.ChangeEvent<any>) {
+        // @ts-ignore
         self.setValue(e.target.name, e.target.value);
       },
 
@@ -119,6 +132,7 @@ export function createFormModel(
       },
 
       setValue(name: string, value: any) {
+        // @ts-ignore
         self[name] = value;
       },
     }));
