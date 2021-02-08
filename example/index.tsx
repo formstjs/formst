@@ -100,7 +100,7 @@ const TodoForm = createFormModel(
   },
   {
     validation: {
-      title: ['required'],
+      title: ['required', 'minLen'],
       description: 'required',
     },
   }
@@ -122,11 +122,11 @@ const addMilestone = () => {
 };
 
 const CreateProjectComponent = observer(() => {
-  console.log(
-    'createProjectForm &*&',
-    getSnapshot(createProjectForm),
-    createProjectForm.isSubmitting
-  );
+  // console.log(
+  //   'createProjectForm &*&',
+  //   createProjectForm,
+  //   createProjectForm.isSubmitting
+  // );
   return (
     <div>
       <Formst formInstance={createProjectForm}>
