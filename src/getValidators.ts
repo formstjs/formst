@@ -1,11 +1,12 @@
 import * as yup from 'yup';
-import isNil from 'lodash/isNil';
 
 let customValidators: any = {};
 export function defineValidators(validators: any) {
   customValidators = validators;
 }
-
+function isNil(value: any) {
+  return value == null;
+}
 export function getValidators() {
   const defaultValidators = {
     required: (value: any) => ({
