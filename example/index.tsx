@@ -8,9 +8,9 @@ import {
   Field,
   Formst,
   addMiddleware,
+  observer,
 } from '../.';
 import { getSnapshot, types } from 'mobx-state-tree';
-import { observer } from 'mobx-react-lite';
 
 defineValidators({
   minLen: (value: any) => {
@@ -63,18 +63,24 @@ const CreateProject = createFormModel(
       team: 'valid',
     },
   }
-).actions(self => ({
-  onSubmit: () => {
-    setTimeout(() => {
-      alert(JSON.stringify(getSnapshot(self), null, 2));
-      self.setSubmitting(false);
-    }, 400);
-  },
-  addMilestone: ms => {
-    const milestone = Milestone.create(ms);
-    self.milestones.push(milestone);
-  },
-}));
+)
+  .views(self => ({
+    get totalMilestone() {
+      return self.milestones.length;
+    },
+  }))
+  .actions(self => ({
+    onSubmit: () => {
+      setTimeout(() => {
+        alert(JSON.stringify(getSnapshot(self), null, 2));
+        self.setSubmitting(false);
+      }, 400);
+    },
+    addMilestone: ms => {
+      const milestone = Milestone.create(ms);
+      self.milestones.push(milestone);
+    },
+  }));
 const createProjectForm = CreateProject.create({
   name: '',
   team: { name: '', lead: '' },
@@ -124,13 +130,15 @@ const addMilestone = () => {
 const CreateProjectComponent = observer(() => {
   // console.log(
   //   'createProjectForm &*&',
-  //   createProjectForm,
-  //   createProjectForm.isSubmitting
+  //   getSnapshot(createProjectForm),
+  //   createProjectForm.isSubmitting,
+  //   createProjectForm.totalMilestone
   // );
   return (
     <div>
       <Formst formInstance={createProjectForm}>
         <form key={'master'} onSubmit={createProjectForm.handleSubmit}>
+          {createProjectForm.totalMilestone}
           <div>
             Project name:
             <Field name="name" type="text" />
@@ -144,6 +152,7 @@ const CreateProjectComponent = observer(() => {
           <div>
             <ErrorMessage name="name" />
           </div>
+          <div></div>
           <div style={{ border: '1px solid black' }}>
             <Formst formInstance={createProjectForm.team}>
               <div key={'second'}>
