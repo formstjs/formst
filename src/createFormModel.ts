@@ -38,9 +38,6 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
                   if (!errors[fieldName]) {
                     // @ts-ignore
                     errors[fieldName] = JSON.stringify(instance.errors);
-                  } else {
-                    // @ts-ignore
-                    errors[fieldName] += JSON.stringify(instance.errors);
                   }
               });
             } else if (
@@ -67,8 +64,8 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
             fieldValidation.forEach((validatorName: string) => {
               if (validators[validatorName]) {
                 const validation = validators[validatorName](self[fieldName]);
-                if (!validation.valid) {
-                  errorMessage += validation.message;
+                if (!validation.valid && !errorMessage) {
+                  errorMessage = validation.message;
                 }
               }
             });
