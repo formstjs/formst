@@ -20,10 +20,10 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "react": ">=16",
     "mobx": "^6.1.5",
     "mobx-react-lite": "^3.2.0",
-    "mobx-state-tree": "^5.0.1"
+    "mobx-state-tree": "^5.0.1",
+    "react": ">=16"
   },
   "husky": {
     "hooks": {
@@ -66,9 +66,7 @@
     "tslib": "^2.1.0",
     "typescript": "^4.1.3"
   },
-  "dependencies": {
-    "yup": "^0.32.8"
-  },
+  "dependencies": {},
   "description": "Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.",
   "directories": {
     "example": "example",
