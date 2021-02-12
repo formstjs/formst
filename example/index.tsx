@@ -10,7 +10,8 @@ import {
   addMiddleware,
   observer,
 } from '../.';
-import { getSnapshot, Instance, types } from 'mobx-state-tree';
+import { Instance, types } from 'mobx-state-tree';
+
 
 defineValidators({
   minLen: (value: any) => {
