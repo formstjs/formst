@@ -101,54 +101,64 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
         return getSnapshot(self);
       },
     }))
-    .actions(self => ({
-      handleSubmit(e: FormEvent) {
-        e.preventDefault();
-        if (Object.keys(self.errors).length === 0) {
-          self.submitting.set(true);
-          // @ts-ignore
-          self.onSubmit();
-        } else {
-          // @ts-ignore
-          self.setAllTouched();
-        }
-      },
+    .actions((self: any) => {
+      let cb: (formInstance: any) => any = formInstance => {
+        JSON.stringify(formInstance.getFormData());
+      };
 
-      setAllTouched() {
-        if (options)
-          for (const fieldName in options.validation) {
-            if (options.validation[fieldName] === 'valid') {
-              if (self[fieldName] && Array.isArray(self[fieldName])) {
-                // @ts-ignore
-                self[fieldName].forEach((instance: any) => {
-                  instance.setAllTouched();
-                });
-              } else if (self[fieldName]) {
-                // @ts-ignore
-                self[fieldName].setAllTouched();
-              }
-            } else {
-              self.touched[fieldName] = true;
-            }
+      return {
+        onSubmit(passedCB: (formInstance: any) => any) {
+          cb = passedCB;
+        },
+
+        handleSubmit(e: FormEvent) {
+          e.preventDefault();
+          if (Object.keys(self.errors).length === 0) {
+            self.submitting.set(true);
+            // @ts-ignore
+            cb(self);
+          } else {
+            // @ts-ignore
+            self.setAllTouched();
           }
-      },
+        },
 
-      setSubmitting(submitting: boolean) {
-        self.submitting.set(submitting);
-      },
+        setAllTouched() {
+          if (options)
+            for (const fieldName in options.validation) {
+              if (options.validation[fieldName] === 'valid') {
+                if (self[fieldName] && Array.isArray(self[fieldName])) {
+                  // @ts-ignore
+                  self[fieldName].forEach((instance: any) => {
+                    instance.setAllTouched();
+                  });
+                } else if (self[fieldName]) {
+                  // @ts-ignore
+                  self[fieldName].setAllTouched();
+                }
+              } else {
+                self.touched[fieldName] = true;
+              }
+            }
+        },
 
-      handleChange(e: React.ChangeEvent<any>) {
-        // @ts-ignore
-        self.setValue(e.target.name, e.target.value);
-      },
+        setSubmitting(submitting: boolean) {
+          self.submitting.set(submitting);
+        },
 
-      handleBlur(e: React.FocusEvent<HTMLInputElement>) {
-        self.touched[e.target.name] = true;
-      },
+        handleChange(e: React.ChangeEvent<any>) {
+          // @ts-ignore
+          self.setValue(e.target.name, e.target.value);
+        },
 
-      setValue(name: string, value: any) {
-        // @ts-ignore
-        self[name] = value;
-      },
-    }));
+        handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+          self.touched[e.target.name] = true;
+        },
+
+        setValue(name: string, value: any) {
+          // @ts-ignore
+          self[name] = value;
+        },
+      };
+    });
 }

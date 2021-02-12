@@ -70,12 +70,6 @@ const CreateProject = createFormModel(
     },
   }))
   .actions(self => ({
-    onSubmit: () => {
-      setTimeout(() => {
-        alert(JSON.stringify(getSnapshot(self), null, 2));
-        self.setSubmitting(false);
-      }, 400);
-    },
     addMilestone: ms => {
       const milestone = Milestone.create(ms);
       self.milestones.push(milestone);
@@ -110,13 +104,7 @@ const TodoForm = createFormModel(
       description: 'required',
     },
   }
-).actions(self => ({
-  onSubmit: () => {
-    setTimeout(() => {
-      alert(JSON.stringify(self.getFormData(), null, 2));
-    }, 100);
-  },
-}));
+);
 
 const todoForm = TodoForm.create({
   title: '',
@@ -128,6 +116,9 @@ const addMilestone = () => {
 };
 
 const CreateProjectComponent = observer(() => {
+  createProjectForm.onSubmit(formInstance => {
+    console.log(formInstance.getFormData());
+  });
   console.log(
     'createProjectForm &*&',
     createProjectForm.getFormData(),
