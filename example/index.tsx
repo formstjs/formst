@@ -113,7 +113,7 @@ const TodoForm = createFormModel(
 ).actions(self => ({
   onSubmit: () => {
     setTimeout(() => {
-      alert(JSON.stringify(getSnapshot(self), null, 2));
+      alert(JSON.stringify(self.getFormData(), null, 2));
     }, 100);
   },
 }));
@@ -130,7 +130,7 @@ const addMilestone = () => {
 const CreateProjectComponent = observer(() => {
   console.log(
     'createProjectForm &*&',
-    getSnapshot(createProjectForm),
+    createProjectForm.getFormData(),
     createProjectForm.isSubmitting,
     createProjectForm.name
   );
@@ -154,6 +154,7 @@ const CreateProjectComponent = observer(() => {
           </div>
           <div></div>
           <div style={{ border: '1px solid black' }}>
+            {/* Re-initialise the form with a nested Formst with a local instance for */}
             <Formst formInstance={createProjectForm.team}>
               <div key={'second'}>
                 <div>
@@ -176,6 +177,7 @@ const CreateProjectComponent = observer(() => {
           {createProjectForm.milestones.map((milestone, index) => {
             return (
               <Formst formInstance={milestone} key={index}>
+                {/* Re-initialise the form with a nested Formst with a local instance for milestone */}
                 <div key={index}>
                   <div>
                     Milestone name:

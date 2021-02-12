@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 type PropType = {
   name: string;
-  component?: React.ComponentClass<any> | string;
+  component?: any;
   children?: ReactChildren;
 } & InputHTMLAttributes<any>;
 

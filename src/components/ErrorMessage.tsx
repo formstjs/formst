@@ -3,7 +3,7 @@ import React, { HTMLAttributes, ReactChildren, useContext } from 'react';
 import { FormContext } from './Formst';
 
 type PropType = {
-  component?: React.ComponentClass<any> | string;
+  component?: any;
   children?: ReactChildren;
   name: string;
 } & HTMLAttributes<any>;

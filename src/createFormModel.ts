@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 import {
+  getSnapshot,
   ModelPropertiesDeclaration,
   TypeOfValue,
   types,
@@ -10,7 +11,9 @@ import { getValidators } from './getValidators';
 export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
   modelName: string,
   properties: P,
-  options: any
+  options?: {
+    validation: any;
+  }
 ) {
   return types
     .model(modelName, properties)
@@ -27,54 +30,63 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
         const errors: any = {};
         const validators = getValidators();
 
-        for (const fieldName in options.validation) {
-          let fieldValidation = options.validation[fieldName];
-          if (fieldValidation === 'valid') {
-            if (self[fieldName] && Array.isArray(self[fieldName])) {
-              // @ts-ignore
-              self[fieldName].forEach((instance: TypeOfValue<typeof self>) => {
+        if (options) {
+          for (const fieldName in options.validation) {
+            let fieldValidation = options.validation[fieldName];
+            if (fieldValidation === 'valid') {
+              if (self[fieldName] && Array.isArray(self[fieldName])) {
                 // @ts-ignore
-                if (instance.errors && Object.keys(instance.errors).length > 0)
-                  if (!errors[fieldName]) {
-                    // @ts-ignore
-                    errors[fieldName] = JSON.stringify(instance.errors);
+                self[fieldName].forEach(
+                  (instance: TypeOfValue<typeof self>) => {
+                    if (
+                      // @ts-ignore
+                      instance.errors &&
+                      // @ts-ignore
+                      Object.keys(instance.errors).length > 0
+                    )
+                      if (!errors[fieldName]) {
+                        // @ts-ignore
+                        errors[fieldName] = JSON.stringify(instance.errors);
+                      }
                   }
-              });
-            } else if (
-              self[fieldName] &&
-              // @ts-ignore
-              self[fieldName].errors &&
-              // @ts-ignore
-              Object.keys(self[fieldName].errors).length > 0
-            ) {
-              // @ts-ignore
-              errors[fieldName] = JSON.stringify(self[fieldName].errors);
-            }
-            continue;
-          }
-
-          if (typeof fieldValidation === 'string') {
-            fieldValidation = [fieldValidation];
-          }
-
-          let errorMessage: string = '';
-          if (typeof fieldValidation === 'function') {
-            errorMessage = fieldValidation(self[fieldName]);
-          } else if (Array.isArray(fieldValidation)) {
-            fieldValidation.forEach((validatorName: string) => {
-              if (validators[validatorName]) {
-                const validation = validators[validatorName](self[fieldName]);
-                if (!validation.valid && !errorMessage) {
-                  errorMessage = validation.message;
-                }
+                );
+              } else if (
+                self[fieldName] &&
+                // @ts-ignore
+                self[fieldName].errors &&
+                // @ts-ignore
+                Object.keys(self[fieldName].errors).length > 0
+              ) {
+                // @ts-ignore
+                errors[fieldName] = JSON.stringify(self[fieldName].errors);
               }
-            });
-          }
+              continue;
+            }
 
-          if (errorMessage) {
-            errors[fieldName] = errorMessage;
+            if (typeof fieldValidation === 'string') {
+              fieldValidation = [fieldValidation];
+            }
+
+            let errorMessage: string = '';
+            if (typeof fieldValidation === 'function') {
+              errorMessage = fieldValidation(self[fieldName]);
+            } else if (Array.isArray(fieldValidation)) {
+              fieldValidation.forEach((validatorName: string) => {
+                if (validators[validatorName]) {
+                  const validation = validators[validatorName](self[fieldName]);
+                  if (!validation.valid && !errorMessage) {
+                    errorMessage = validation.message;
+                  }
+                }
+              });
+            }
+
+            if (errorMessage) {
+              errors[fieldName] = errorMessage;
+            }
           }
         }
+
         return errors;
       },
 
@@ -82,6 +94,11 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
         let errors = self.errors;
         if (Object.keys(errors).length === 0) return true;
         return false;
+      },
+
+      getFormData() {
+        // @ts-ignore
+        return getSnapshot(self);
       },
     }))
     .actions(self => ({
@@ -98,21 +115,22 @@ export function createFormModel<P extends ModelPropertiesDeclaration = {}>(
       },
 
       setAllTouched() {
-        for (const fieldName in options.validation) {
-          if (options.validation[fieldName] === 'valid') {
-            if (self[fieldName] && Array.isArray(self[fieldName])) {
-              // @ts-ignore
-              self[fieldName].forEach((instance: any) => {
-                instance.setAllTouched();
-              });
-            } else if (self[fieldName]) {
-              // @ts-ignore
-              self[fieldName].setAllTouched();
+        if (options)
+          for (const fieldName in options.validation) {
+            if (options.validation[fieldName] === 'valid') {
+              if (self[fieldName] && Array.isArray(self[fieldName])) {
+                // @ts-ignore
+                self[fieldName].forEach((instance: any) => {
+                  instance.setAllTouched();
+                });
+              } else if (self[fieldName]) {
+                // @ts-ignore
+                self[fieldName].setAllTouched();
+              }
+            } else {
+              self.touched[fieldName] = true;
             }
-          } else {
-            self.touched[fieldName] = true;
           }
-        }
       },
 
       setSubmitting(submitting: boolean) {
