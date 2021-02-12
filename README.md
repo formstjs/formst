@@ -1,160 +1,102 @@
-# TSDX React User Guide
+### 1) Introduction
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+**Formst** is a JS library for quickly building high-performance forms in React. Unlike most form libraries that are UI-First, Formst is **Data-First**.
 
-> This TSDX setup is meant for developing React component libraries (not apps!) that can be published to NPM. If you’re looking to build a React-based app, you should use `create-react-app`, `razzle`, `nextjs`, `gatsby`, or `react-static`.
+### 2) Motivation:
 
-> If you’re new to TypeScript and React, checkout [this handy cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet/)
+While working on a recent project, [GeekyAnts](https://geekyants.com) devs realised that there was no easy way to build forms for React apps. Yes, there are solutions available but they're not quite optimal. It is difficult to find a single library that provides great UX, speed and features such as interdependency between form fields. That's when we decided to build Formst, a library that allows you to build high-performance, responsive forms for your React apps.
 
-## Commands
+### 3) Features
 
-TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
+- **High-performance**: \**\*\*Formst is MST-based which makes it *fast* and *powerful\*.
+- **Responsive**: Create _responsive_ forms for your React apps _with ease_.
+- **Forms for Everything**: Build _flat_, _stepper_ or _nested_ forms based on your app needs.
+- **Middleware**: Use middleware to _modify form behaviour_ such as pre-processing input values.
 
-The recommended workflow is to run TSDX in one terminal:
+### 4) Installation
 
-```bash
-npm start # or yarn start
-```
-
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-Then run the example inside another:
+Use 'yarn' or 'npm' to install this library as shown below:
 
 ```bash
-cd example
-npm i # or yarn to install dependencies
-npm start # or yarn start
+# yarn
+yarn add mst-form-creator
+
+# npm
+npm add mst-form-creator
 ```
 
-The default example imports and live reloads whatever is in `/dist`, so if you are seeing an out of date component, make sure TSDX is running in watch mode like we recommend above. **No symlinking required**, we use [Parcel's aliasing](https://parceljs.org/module_resolution.html#aliases).
+### 5) Dependencies
 
-To do a one-off build, use `npm run build` or `yarn build`.
+MobX, mobx-react/mobx-react-lite and MobX-state-tree.
 
-To run tests, use `npm test` or `yarn test`.
+### 6) Usage
 
-## Configuration
+- Create a form model as shown below:
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
+  ```tsx
+  const TodoForm = createFormModel(
+    'TodoForm',
+    {
+      title: types.string,
+      description: types.string,
+    },
 
-### Jest
+    {
+      validation: {
+        title: ['required'],
+        description: 'required',
+      },
+    }
+  ).actions(self => ({
+    onSubmit: () => {
+      setTimeout(() => {
+        alert(JSON.stringify(getSnapshot(self), null, 2));
+      }, 100);
+    },
+  }));
+  ```
 
-Jest tests are set up to run with `npm test` or `yarn test`.
+- Create an instance of the model:
 
-### Bundle analysis
+  ```tsx
+  const todoForm = TodoForm.create({
+    title: '',
+    description: '',
+  });
+  ```
 
-Calculates the real cost of your library using [size-limit](https://github.com/ai/size-limit) with `npm run size` and visulize it with `npm run analyze`.
+- Wrap the components inside _MSTForm_ and use the _Field_ API to render the fields:
 
-#### Setup Files
+  ```tsx
+  <MSTForm formInstance={todoForm}>
+    <form onSubmit={todoForm.handleSubmit}>
+      <Field name="title" />
+      <ErrorMessage name="title" />
 
-This is the folder structure we set up for you:
+      <br />
 
-```txt
-/example
-  index.html
-  index.tsx       # test your component here in a demo app
-  package.json
-  tsconfig.json
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
+      <Field name="description" />
+      <ErrorMessage name="description" />
 
-#### React Testing Library
+      <button type="submit">Submit</button>
+    </form>
+  </MSTForm>
+  ```
 
-We do not set up `react-testing-library` for you yet, we welcome contributions and documentation on this.
+### 8) Tech Stack
 
-### Rollup
+React & Javascript.
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+### 9) Contributors
 
-### TypeScript
+- Aditya Jamuar ([@GeekJamuar](https://twitter.com/geekjamuar?lang=en))
+- Sanket Sahu ([@sanketsahu](https://twitter.com/sanketsahu))
+- Himanshu Satija ([@HimanshuSatija\_](https://twitter.com/HimanshuSatija_))
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
+### 10) How to Contribute
 
-## Continuous Integration
+Thank you for your interest in contributing to Formst! We are lucky to have you 🙂 Head over to [Contribution Guidelines](https://github.com/syncstate/core/blob/master/CONTRIBUTING.md) and learn how you can be a part of a wonderful, growing community.
 
-### GitHub Actions
+### 11) License
 
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
-```
-
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
-
-## Module Formats
-
-CJS, ESModules, and UMD module formats are supported.
-
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
-
-## Deploying the Example Playground
-
-The Playground is just a simple [Parcel](https://parceljs.org) app, you can deploy it anywhere you would normally deploy that. Here are some guidelines for **manually** deploying with the Netlify CLI (`npm i -g netlify-cli`):
-
-```bash
-cd example # if not already in the example folder
-npm run build # builds to dist
-netlify deploy # deploy the dist folder
-```
-
-Alternatively, if you already have a git repo connected, you can set up continuous deployment with Netlify:
-
-```bash
-netlify init
-# build command: yarn build && cd example && yarn && yarn build
-# directory to deploy: example/dist
-# pick yes for netlify.toml
-```
-
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
-
-## Usage with Lerna
-
-When creating a new package with TSDX within a project set up with Lerna, you might encounter a `Cannot resolve dependency` error when trying to run the `example` project. To fix that you will need to make changes to the `package.json` file _inside the `example` directory_.
-
-The problem is that due to the nature of how dependencies are installed in Lerna projects, the aliases in the example project's `package.json` might not point to the right place, as those dependencies might have been installed in the root of your Lerna project.
-
-Change the `alias` to point to where those packages are actually installed. This depends on the directory structure of your Lerna project, so the actual path might be different from the diff below.
-
-```diff
-   "alias": {
--    "react": "../node_modules/react",
--    "react-dom": "../node_modules/react-dom"
-+    "react": "../../../node_modules/react",
-+    "react-dom": "../../../node_modules/react-dom"
-   },
-```
-
-An alternative to fixing this problem would be to remove aliases altogether and define the dependencies referenced as aliases as dev dependencies instead. [However, that might cause other problems.](https://github.com/palmerhq/tsdx/issues/64)
+Licensed under the MIT License, Copyright © 2020 GeekyAnts. See [LICENSE](https://github.com/syncstate/core/blob/master/LICENSE) for more information.
