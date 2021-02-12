@@ -10,7 +10,7 @@ import {
   addMiddleware,
   observer,
 } from '../.';
-import { getSnapshot, types } from 'mobx-state-tree';
+import { Instance, types } from 'mobx-state-tree';
 
 defineValidators({
   minLen: (value: any) => {
@@ -116,9 +116,12 @@ const addMilestone = () => {
 };
 
 const CreateProjectComponent = observer(() => {
-  createProjectForm.onSubmit(formInstance => {
-    console.log(formInstance.getFormData());
-  });
+  createProjectForm.onSubmit(
+    (formInstance: Instance<typeof createProjectForm>) => {
+      console.log(formInstance.getFormData());
+      formInstance.setSubmitting(false);
+    }
+  );
   console.log(
     'createProjectForm &*&',
     createProjectForm.getFormData(),
