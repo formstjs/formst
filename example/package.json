@@ -8,6 +8,7 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
+    "formst": "^1.0.7",
     "mobx-react-lite": "^3.1.6",
     "react-app-polyfill": "^1.0.0"
   },
