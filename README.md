@@ -83,20 +83,20 @@ MobX, mobx-react/mobx-react-lite and MobX-state-tree.
   </MSTForm>
   ```
 
-### 8) Tech Stack
+### 7) Tech Stack
 
 React & Javascript.
 
-### 9) Contributors
+### 8) Contributors
 
 - Aditya Jamuar ([@GeekJamuar](https://twitter.com/geekjamuar?lang=en))
 - Sanket Sahu ([@sanketsahu](https://twitter.com/sanketsahu))
 - Himanshu Satija ([@HimanshuSatija\_](https://twitter.com/HimanshuSatija_))
 
-### 10) How to Contribute
+### 9) How to Contribute
 
-Thank you for your interest in contributing to Formst! We are lucky to have you 🙂 Head over to [Contribution Guidelines](https://github.com/syncstate/core/blob/master/CONTRIBUTING.md) and learn how you can be a part of a wonderful, growing community.
+Thank you for your interest in contributing to Formst! We are lucky to have you 🙂 Head over to Contribution Guidelines and learn how you can be a part of a wonderful, growing community.
 
-### 11) License
+### 10) License
 
-Licensed under the MIT License, Copyright © 2020 GeekyAnts. See [LICENSE](https://github.com/syncstate/core/blob/master/LICENSE) for more information.
+Licensed under the MIT License, Copyright © 2020 GeekyAnts. See LICENSE for more information.
