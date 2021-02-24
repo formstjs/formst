@@ -97,6 +97,8 @@ React & Javascript.
 
 Thank you for your interest in contributing to Formst! We are lucky to have you 🙂 Head over to Contribution Guidelines and learn how you can be a part of a wonderful, growing community.
 
+For major changes, please open an issue first to discuss changes and update tests as appropriate.
+
 ### 10) License
 
 Licensed under the MIT License, Copyright © 2020 GeekyAnts. See LICENSE for more information.
