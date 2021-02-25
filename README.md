@@ -27,7 +27,9 @@ npm add mst-form-creator
 
 ### 5) Dependencies
 
-MobX, mobx-react/mobx-react-lite and MobX-state-tree.
+- mobX
+- mobx-react/mobx-react-lite
+- mobX-state-tree.
 
 ### 6) Usage
 
@@ -47,13 +49,7 @@ MobX, mobx-react/mobx-react-lite and MobX-state-tree.
         description: 'required',
       },
     }
-  ).actions(self => ({
-    onSubmit: () => {
-      setTimeout(() => {
-        alert(JSON.stringify(getSnapshot(self), null, 2));
-      }, 100);
-    },
-  }));
+  );
   ```
 
 - Create an instance of the model:
@@ -62,6 +58,15 @@ MobX, mobx-react/mobx-react-lite and MobX-state-tree.
   const todoForm = TodoForm.create({
     title: '',
     description: '',
+  });
+  ```
+
+- Add handler for submit
+
+  ```tsx
+  todoForm.onSubmit((formInstance: Instance<typeof createProjectForm>) => {
+    console.log(formInstance.getFormData());
+    formInstance.setSubmitting(false);
   });
   ```
 
@@ -85,7 +90,8 @@ MobX, mobx-react/mobx-react-lite and MobX-state-tree.
 
 ### 7) Tech Stack
 
-React & Javascript.
+- React
+- Javascript.
 
 ### 8) Contributors
 
