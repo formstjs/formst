@@ -9,9 +9,10 @@ import {
   Formst,
   addMiddleware,
   observer,
+  types,
+  Instance,
 } from '../.';
-import { Instance, types } from 'mobx-state-tree';
-
+// import { Instance, types } from 'mobx-state-tree';
 
 defineValidators({
   minLen: (value: any) => {
