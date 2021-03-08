@@ -78,8 +78,6 @@ npm add mst-form-creator
       <Field name="title" />
       <ErrorMessage name="title" />
 
-      <br />
-
       <Field name="description" />
       <ErrorMessage name="description" />
 
@@ -98,6 +96,8 @@ npm add mst-form-creator
 - Aditya Jamuar ([@GeekJamuar](https://twitter.com/geekjamuar?lang=en))
 - Sanket Sahu ([@sanketsahu](https://twitter.com/sanketsahu))
 - Himanshu Satija ([@HimanshuSatija\_](https://twitter.com/HimanshuSatija_))
+- Meenu Makkar ([@meenu_makkar](https://twitter.com/makkar_meenu))
+- Vidhi Kataria ([@VidhiKataria2](https://twitter.com/vidhikataria2?lang=en))
 
 ### 9) How to Contribute
 
