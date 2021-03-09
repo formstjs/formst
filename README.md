@@ -1,6 +1,6 @@
 ### 1) Introduction
 
-**Formst** is a JS library for quickly building high-performance forms in React. Unlike most form libraries that are UI-First, Formst is **Data-First**.
+**Formst** is a model-driven library for quickly building high-performance forms in React. Unlike most form libraries that are UI-First, Formst is **Data-First**.
 
 ### 2) Motivation:
 
@@ -27,9 +27,7 @@ npm add mst-form-creator
 
 ### 5) Dependencies
 
-- mobX
-- mobx-react/mobx-react-lite
-- mobX-state-tree.
+MobX, mobx-react/mobx-react-lite and MobX-state-tree.
 
 ### 6) Usage
 
@@ -49,7 +47,13 @@ npm add mst-form-creator
         description: 'required',
       },
     }
-  );
+  ).actions(self => ({
+    onSubmit: () => {
+      setTimeout(() => {
+        alert(JSON.stringify(getSnapshot(self), null, 2));
+      }, 100);
+    },
+  }));
   ```
 
 - Create an instance of the model:
@@ -58,15 +62,6 @@ npm add mst-form-creator
   const todoForm = TodoForm.create({
     title: '',
     description: '',
-  });
-  ```
-
-- Add handler for submit
-
-  ```tsx
-  todoForm.onSubmit((formInstance: Instance<typeof createProjectForm>) => {
-    console.log(formInstance.getFormData());
-    formInstance.setSubmitting(false);
   });
   ```
 
@@ -86,12 +81,17 @@ npm add mst-form-creator
   </MSTForm>
   ```
 
-### 7) Tech Stack
+### 7) Example
 
-- React
-- Javascript.
+This is a simple login form with two inputs that are validated on submission. It can also display specific error messages for invalid input values.
 
-### 8) Contributors
+[https://codesandbox.io/embed/formst-demo-ffw8v](https://codesandbox.io/embed/formst-demo-ffw8v)
+
+### 8) Tech Stack
+
+React & Javascript.
+
+### 9) Contributors
 
 - Aditya Jamuar ([@GeekJamuar](https://twitter.com/geekjamuar?lang=en))
 - Sanket Sahu ([@sanketsahu](https://twitter.com/sanketsahu))
@@ -100,12 +100,12 @@ npm add mst-form-creator
 - Vidhi Kataria ([@VidhiKataria2](https://twitter.com/vidhikataria2?lang=en))
 - Gaurav Guha ([@greedy_reader](https://twitter.com/greedy_reader?lang=en))
 
-### 9) How to Contribute
+### 10) How to Contribute
 
-Thank you for your interest in contributing to Formst! We are lucky to have you 🙂 Head over to Contribution Guidelines and learn how you can be a part of a wonderful, growing community.
+Thank you for your interest in contributing to Formst! We are lucky to have you 🙂 Head over to [Contribution Guidelines](https://github.com/formstjs/formst/blob/master/CONTRIBUTING.md) and learn how you can be a part of a wonderful, growing community.
 
 For major changes, please open an issue first to discuss changes and update tests as appropriate.
 
-### 10) License
+### 11) License
 
-Licensed under the MIT License, Copyright © 2020 GeekyAnts. See LICENSE for more information.
+Licensed under the MIT License, Copyright © 2020 GeekyAnts. See [LICENSE](https://github.com/formstjs/formst/blob/master/LICENSE) for more information.
