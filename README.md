@@ -83,9 +83,7 @@ MobX, mobx-react/mobx-react-lite and MobX-state-tree.
 
 ### 7) Example
 
-This is a simple login form with two inputs that are validated on submission. It can also display specific error messages for invalid input values.
-
-[https://codesandbox.io/embed/formst-demo-ffw8v](https://codesandbox.io/embed/formst-demo-ffw8v)
+[This simple login form](https://codesandbox.io/s/formst-demo-ffw8v?from-embed\) will take two inputs that are validated on submission. It can also display specific error messages for invalid input values.
 
 ### 8) Tech Stack
 
