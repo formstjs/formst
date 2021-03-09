@@ -98,6 +98,7 @@ npm add mst-form-creator
 - Himanshu Satija ([@HimanshuSatija\_](https://twitter.com/HimanshuSatija_))
 - Meenu Makkar ([@meenu_makkar](https://twitter.com/makkar_meenu))
 - Vidhi Kataria ([@VidhiKataria2](https://twitter.com/vidhikataria2?lang=en))
+- Gaurav Guha ([@greedy_reader](https://twitter.com/greedy_reader?lang=en))
 
 ### 9) How to Contribute
 
